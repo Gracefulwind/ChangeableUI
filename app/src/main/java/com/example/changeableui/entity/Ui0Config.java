@@ -1,13 +1,19 @@
 package com.example.changeableui.entity;
 
+import com.example.changeableui.entity.base.BaseUiConfig;
 import com.example.changeableui.entity.base.CommonImageViewConfigEntity;
 import com.example.changeableui.entity.base.CommonTextViewConfigEntity;
+import com.google.gson.annotations.SerializedName;
 
-public class Ui0Config {
+public class Ui0Config extends BaseUiConfig {
 
+    @SerializedName("leftImage")
     protected CommonImageViewConfigEntity leftImage = new CommonImageViewConfigEntity();
+    @SerializedName("rightTitle")
     protected CommonTextViewConfigEntity rightTitle = new CommonTextViewConfigEntity();
+    @SerializedName("leftTimeNews")
     protected CommonTextViewConfigEntity leftTimeNews = new CommonTextViewConfigEntity();
+    @SerializedName("rightClickCounts")
     protected CommonTextViewConfigEntity rightClickCounts = new CommonTextViewConfigEntity();
 
     public CommonImageViewConfigEntity getLeftImage() {
