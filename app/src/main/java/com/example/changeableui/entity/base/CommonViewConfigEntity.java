@@ -1,20 +1,37 @@
 package com.example.changeableui.entity.base;
 
+import com.google.gson.annotations.SerializedName;
+
 public class CommonViewConfigEntity {
 
 
+    @SerializedName("width")
     protected int width;
+    @SerializedName("height")
     protected int height;
+    @SerializedName("marginLeft")
     protected int marginLeft;
+    @SerializedName("marginTop")
     protected int marginTop;
+    @SerializedName("marginRight")
     protected int marginRight;
+    @SerializedName("marginBottom")
     protected int marginBottom;
+    @SerializedName("paddingLeft")
     protected int paddingLeft;
+    @SerializedName("paddingTop")
     protected int paddingTop;
+    @SerializedName("paddingRight")
     protected int paddingRight;
+    @SerializedName("paddingBottom")
     protected int paddingBottom;
+    @SerializedName("gravity")
     protected int gravity;
+    @SerializedName("visible")
     protected int visible;
+
+    @SerializedName("shape")
+    protected ShapeConfig shape;
 
     public int getWidth() {
         return width;
@@ -110,5 +127,13 @@ public class CommonViewConfigEntity {
 
     public void setVisible(int visible) {
         this.visible = visible;
+    }
+
+    public ShapeConfig getShape() {
+        return shape;
+    }
+
+    public void setShape(ShapeConfig shape) {
+        this.shape = shape;
     }
 }

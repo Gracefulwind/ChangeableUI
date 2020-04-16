@@ -2,9 +2,8 @@ package com.example.changeableui.utils;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.CountDownTimer;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,10 +13,12 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.changeableui.entity.Ui0Config;
+import com.example.changeableui.entity.MyConfig;
 import com.example.changeableui.entity.base.CommonImageViewConfigEntity;
 import com.example.changeableui.entity.base.CommonTextViewConfigEntity;
 import com.example.changeableui.entity.base.CommonViewConfigEntity;
+import com.example.changeableui.entity.base.ShapeConfig;
+import com.example.changeableui.main.SplashActivity;
 import com.google.gson.Gson;
 
 import java.io.BufferedInputStream;
@@ -29,13 +30,28 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.util.TypedValue.applyDimension;
+import static com.example.changeableui.utils.UiUtil.dip2px;
+import static com.example.changeableui.utils.UiUtil.sp2px;
+
+/**
+  *
+  * @ClassName:      UiConfigUtils
+  * @Author:         Gracefulwind
+  * @CreateDate:     2020/4/15 17:37
+  * @Description:    MATCH = -1 , WARP = -2
+  *
+  * @UpdateUser:
+  * @UpdateDate:     2020/4/15 17:37
+  * @UpdateRemark:
+  * @Version:        1.0
+  * @Email 429344332@qq.com
+ */
 
 public class UiConfigUtils {
     public static Map<String, Object> uiConfigMap = new HashMap<String, Object>();
     private static boolean isConfigInited = false;
     private static Context appContext = null;
-
+    private static final String PATH_NAME = "/sdcard/uiConfig.txt";
 
 
     public static class UiConfigKey{
@@ -57,20 +73,24 @@ public class UiConfigUtils {
         }
 
         //1.get local data
-        Ui0Config uiConfigByLocal = getUiConfigByLocal();
+        MyConfig uiConfigByLocal = getUiConfigByLocal();
         //2.初始化数据
         initUiConfigMap(uiConfigByLocal);
     }
 
-    private static void initUiConfigMap(Ui0Config uiConfigByLocal) {
+    private static void initUiConfigMap(MyConfig uiConfigByLocal) {
         //
         //实际拿到的数据是个List，遍历List，按照键值对存储
-        uiConfigMap.put(UiConfigKey.UI0_CONFIG, uiConfigByLocal);
+        //todo:fix 这么写的话其实没啥意义。。。MyConfig依然存在于堆中。其实直接读写MyConfig即可。。。或者将这些量再次解析后，存再GlobalUiConfig中
+        uiConfigMap.put(UiConfigKey.UI0_CONFIG, uiConfigByLocal.getUi0Config());
+        uiConfigMap.put(UiConfigKey.UI1_CONFIG, uiConfigByLocal.getUi1Config());
+        isConfigInited = true;
     }
 
-    private static Ui0Config getUiConfigByLocal() {
-        Ui0Config ui0Config = null;
-        File file = new File("/sdcard/ui0Config.text");
+    private static MyConfig getUiConfigByLocal() {
+        MyConfig myConfig = null;
+
+        File file = new File(PATH_NAME);
         boolean exists = file.exists();
         StringBuilder sb = new StringBuilder();
         try{
@@ -95,8 +115,8 @@ public class UiConfigUtils {
         System.out.println("==========");
         System.out.println("==========");
         System.out.println("==========");
-        ui0Config = new Gson().fromJson(sb.toString(), Ui0Config.class);
-        return ui0Config;
+        myConfig = new Gson().fromJson(sb.toString(), MyConfig.class);
+        return myConfig;
     }
 
     private static void getUiConfigByNet() {
@@ -106,7 +126,7 @@ public class UiConfigUtils {
         //todo:异步现成
 //        这里是测试，直接调用好了
 
-        CountDownTimer timer = new CountDownTimer(1000, 1000) {
+        CountDownTimer timer = new CountDownTimer(SplashActivity.SPLASH_TIME / 3, 1000) {
             public void onTick(long millisUntilFinished) {
             }
 
@@ -128,51 +148,6 @@ public class UiConfigUtils {
         return uiConfig;
     }
 
-
-//======================================================================
-    /**
-     * 描述：dip转换为px.
-     *
-     * @param dipValue the dip value
-     * @return px值
-     */
-    public static float dip2px(float dipValue) {
-        DisplayMetrics mDisplayMetrics = appContext.getResources().getDisplayMetrics();
-        return applyDimension(TypedValue.COMPLEX_UNIT_DIP, dipValue, mDisplayMetrics);
-    }
-
-    /**
-     * 描述：px转换为dip.
-     *
-     * @param pxValue the px value
-     * @return dip值
-     */
-    public static float px2dip(float pxValue) {
-        DisplayMetrics mDisplayMetrics = appContext.getResources().getDisplayMetrics();
-        return pxValue / mDisplayMetrics.density;
-    }
-
-    /**
-     * 描述：sp转换为px.
-     *
-     * @param spValue the sp value
-     * @return sp值
-     */
-    public static float sp2px(float spValue) {
-        DisplayMetrics mDisplayMetrics = appContext.getResources().getDisplayMetrics();
-        return applyDimension(TypedValue.COMPLEX_UNIT_SP, spValue, mDisplayMetrics);
-    }
-
-    /**
-     * 描述：px转换为sp.
-     *
-     * @param pxValue the sp value
-     * @return sp值
-     */
-    public static float px2sp(float pxValue) {
-        DisplayMetrics mDisplayMetrics = appContext.getResources().getDisplayMetrics();
-        return pxValue / mDisplayMetrics.scaledDensity;
-    }
 
 //======================================================================
     private static boolean checkNull(Object config) {
@@ -219,6 +194,10 @@ public class UiConfigUtils {
             targetView.setVisibility(View.VISIBLE);
         }else {
             targetView.setVisibility(View.GONE);
+        }
+        ShapeConfig shapeConfig = config.getShape();
+        if(null != shapeConfig){
+            setViewBackground(targetView, shapeConfig);
         }
         return targetView;
     }
@@ -331,6 +310,15 @@ public class UiConfigUtils {
         setCommonViewConfigInConstraint(targetView, config);
         //todo:fix 给imageview设置颜色过滤
         String colorFilter = config.getColorFilter();
+        return targetView;
+    }
+
+    public static View setViewBackground(View targetView, ShapeConfig config){
+        if(checkNull(config)){
+            return targetView;
+        }
+        GradientDrawable shape = ShapeUtil.createShape(config.getStrokeWidth(), config.getRoundRadius(), config.getShape(), config.getStrokeColor(), config.getFillColor());
+        targetView.setBackground(shape);
         return targetView;
     }
 }

@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 
 public class SplashActivity extends AppCompatActivity {
 
+    public static final long SPLASH_TIME = 3000;
 
     @BindView(R.id.as_tv_countdown)
     TextView asTvCountdown;
@@ -34,14 +35,13 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * CountDownTimer timer = new CountDownTimer(3000, 1000)中，
+     * 第一个参数表示总时间，第二个参数表示间隔时间。
+     * 意思就是每隔一秒会回调一次方法onTick，然后1秒之后会回调onFinish方法。
+     */
     private void initData() {
-        /**
-         * CountDownTimer timer = new CountDownTimer(3000, 1000)中，
-         * 第一个参数表示总时间，第二个参数表示间隔时间。
-         * 意思就是每隔一秒会回调一次方法onTick，然后1秒之后会回调onFinish方法。
-         */
-
-        CountDownTimer timer = new CountDownTimer(3000, 1000) {
+        CountDownTimer timer = new CountDownTimer(SPLASH_TIME, 1000) {
             public void onTick(long millisUntilFinished) {
                 asTvCountdown.setText(millisUntilFinished / 1000 + "秒后进入主页");
             }

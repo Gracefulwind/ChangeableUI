@@ -3,6 +3,7 @@ package com.example.changeableui;
 import android.app.Application;
 
 import com.example.changeableui.utils.UiConfigUtils;
+import com.example.changeableui.utils.UiUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class App extends Application {
     private void initData() {
         initX5WebView();
         initUiConfig();
+        initUiUtil();
     }
 
 
@@ -25,6 +27,10 @@ public class App extends Application {
 
     private void initUiConfig() {
         UiConfigUtils.initUiConfig(this);
+    }
+
+     private void initUiUtil() {
+         UiUtil.initUiUtil(this);
     }
 
 

@@ -1,10 +1,13 @@
 package com.example.changeableui.entity.base;
 
+import com.google.gson.annotations.SerializedName;
+
 public class CommonTextViewConfigEntity extends CommonViewConfigEntity{
 
 
+    @SerializedName("textColor")
     protected String textColor;
-
+    @SerializedName("textSize")
     protected int textSize;
 
     public String getTextColor() {
@@ -22,4 +25,5 @@ public class CommonTextViewConfigEntity extends CommonViewConfigEntity{
     public void setTextSize(int textSize) {
         this.textSize = textSize;
     }
+
 }

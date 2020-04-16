@@ -7,14 +7,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class Ui0Config extends BaseUiConfig {
 
-    @SerializedName("leftImage")
+    @SerializedName("Component1")
     protected CommonImageViewConfigEntity leftImage = new CommonImageViewConfigEntity();
-    @SerializedName("rightTitle")
+    @SerializedName("Component2")
     protected CommonTextViewConfigEntity rightTitle = new CommonTextViewConfigEntity();
-    @SerializedName("leftTimeNews")
+    @SerializedName("Component3")
     protected CommonTextViewConfigEntity leftTimeNews = new CommonTextViewConfigEntity();
-    @SerializedName("rightClickCounts")
+    @SerializedName("Component4")
     protected CommonTextViewConfigEntity rightClickCounts = new CommonTextViewConfigEntity();
+
 
     public CommonImageViewConfigEntity getLeftImage() {
         return leftImage;
