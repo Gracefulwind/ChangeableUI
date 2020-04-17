@@ -13,16 +13,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.bumptech.glide.Glide;
 import com.example.changeableui.R;
 import com.example.changeableui.R2;
+import com.example.changeableui.base.BaseActivity;
 import com.example.changeableui.entity.Ui0Config;
 import com.example.changeableui.entity.Ui1Config;
+import com.example.changeableui.test.TestMapBeanA;
+import com.example.changeableui.test.TestMapBeanB;
 import com.example.changeableui.utils.UiConfigUtils;
+import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     //---ui0------------------
     @BindView(R.id.am_iv_ui0_left_image)
@@ -57,29 +61,23 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        initView();
-        initData();
-
-
+    protected int getLayout() {
+        return R.layout.activity_main;
     }
 
-
-    private void initView() {
+    @Override
+    protected void initView() {
 
         initUi0();
 
     }
 
+//--刷新UI布局-----------------------------------
     private void initUi0() {
         setUi0ByConfig();
         setUi1ByConfig();
 
     }
-
 
     private void setUi0ByConfig() {
         Ui0Config uiConfig = (Ui0Config) UiConfigUtils.getUiConfig(UiConfigUtils.UiConfigKey.UI0_CONFIG);
@@ -103,7 +101,9 @@ public class MainActivity extends AppCompatActivity {
         UiConfigUtils.setCommonImageViewConfigInConstraint(ivRadioNews, uiConfig.getIv_radio_news());
     }
 
-    private void initData() {
+//--写数据--------------------------------------------
+    @Override
+    protected void initData() {
         refreshUi0();
         refreshUi1();
     }
@@ -135,7 +135,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.am_ll_ui1:
                 Toast.makeText(this, "打开2类UI", Toast.LENGTH_SHORT).show();
                 System.out.println("----onViewClicked----am_ll_ui1---");
+                String testStr = "{\"testMap\":{\"keyA\":\"valueA\",\"KkeyB\":\"valueB\"},\"testMapB\": {\"a\":\"aaa\",\"b\":\"bbb\",\"c\":\"ccc\"},\"data\":[{\"id\":5771,\"name\":\"便民服务\",\"category_type\":\"common\",\"type\":51,\"type_name\":\"聚合服务\",\"logo\":\"\",\"app_style\":\"news\",\"allow_comment\":1,\"sort\":\"4915\",\"intro\":\"\",\"tips\":\"\"},{\"id\":5772,\"name\":\"分类信息\",\"category_type\":\"common\",\"type\":34,\"type_name\":\"聚合外链-认证\",\"logo\":\"\",\"app_style\":\"news\",\"allow_comment\":1,\"sort\":\"4916\",\"intro\":\"\",\"tips\":\"\"},{\"id\":6886,\"name\":\"政务公开\",\"category_type\":\"common\",\"type\":84,\"type_name\":\"工具聚合\",\"logo\":\"\",\"app_style\":\"news\",\"allow_comment\":1,\"sort\":\"7051\",\"intro\":\"\",\"tips\":\"\"}]}\n";
+                TestMapBeanA testMapBeanA = new Gson().fromJson(testStr, TestMapBeanA.class);
+                TestMapBeanB testMapBeanB = new Gson().fromJson(testStr, TestMapBeanB.class);
                 System.out.println("----onViewClicked----am_ll_ui1---");
+                System.out.println("----onViewClicked----am_ll_ui1---");
+//                tvItemTitle.setMaxLines(1);
 //                setUi0ByConfig();
                 break;
             default:
