@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.example.changeableui.R;
 import com.example.changeableui.R2;
@@ -140,6 +141,7 @@ public class MainActivity extends BaseActivity {
                 TestMapBeanB testMapBeanB = new Gson().fromJson(testStr, TestMapBeanB.class);
                 System.out.println("----onViewClicked----am_ll_ui1---");
                 System.out.println("----onViewClicked----am_ll_ui1---");
+                ARouter.getInstance().build("/test/TestMyArouterActivity").navigation();
 //                tvItemTitle.setMaxLines(1);
 //                setUi0ByConfig();
                 break;
